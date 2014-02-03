@@ -1,0 +1,83 @@
+<script>
+
+var baseStats = {
+	dragon:{
+		name:"Dragon",
+		crit:0.15,
+		hit:100,
+		atk:20,
+		def:18,
+		counters:1
+	},
+	peasant:{
+		name:"Peasant",
+		crit:0.05,
+		hit:5,
+		atk:3,
+		def:2,
+		counters:1
+	},
+	gargoyle:{
+		name:"Gargoyle",
+		crit:0.05,
+		hit:10,
+		atk:6,
+		def:4,
+		counters:1
+	},
+}
+
+function factory(name){
+	return baseStats[name];
+}
+
+function getStack(name,qty){
+	var stack = factory(name);
+	stack.qty = qty;
+	return stack;
+}
+
+function strike(attacker,target){
+	var diff = attacker.atk - target.def + 1;
+	var damage = attacker.qty * Math.exp(diff/4);
+	var mult = 1 - (0.5 * Math.random());
+	damage *= mult;
+	var isCrit = Math.random() < attacker.crit;
+	if(isCrit){
+		console.log("Critical hit!");
+		damage *= 2;
+	}
+	console.log("Damage Dealt:");
+	console.log(damage);
+	var menLost = Math.floor(damage/target.hit);
+	console.log(menLost);
+	target.qty -= menLost;
+}
+
+function attack(attacker,target){
+	strike(attacker,target);
+	if(target.qty<=0){
+		console.log("Target is dead");
+		return;
+	}
+	if(target.counters>0){
+		strike(target,attacker);
+	}
+	if(!target.alwaysCounter){
+		target.counters--;
+	}
+	if(attacker.qty<=0){
+		console.log("Attacker is dead");
+		return;
+	}
+
+}
+var guy1 = getStack("peasant",100);
+var guy1 = getStack("dragon",5);
+var guy2 = getStack("gargoyle",50);
+attack(guy1,guy2);
+console.log("Guy 1");
+console.log(guy1);
+console.log("Guy 2");
+console.log(guy2);
+</script>
