@@ -22,7 +22,7 @@ var baseStats = {
 		crit:0.05,
 		hit:10,
 		atk:6,
-		def:4,
+		def:6,
 		counters:1
 	},
 }
@@ -38,8 +38,8 @@ function getStack(name,qty){
 }
 
 function strike(attacker,target){
-	var diff = attacker.atk - target.def + 1;
-	var damage = attacker.qty * Math.exp(diff/4);
+	var diff = attacker.atk - target.def;
+	var damage = attacker.qty * attacker.hit * attacker.atk / target.def;
 	var mult = 1 - (0.5 * Math.random());
 	damage *= mult;
 	var isCrit = Math.random() < attacker.crit;
@@ -73,7 +73,7 @@ function attack(attacker,target){
 
 }
 var guy1 = getStack("peasant",100);
-var guy1 = getStack("dragon",5);
+var guy1 = getStack("dragon",1);
 var guy2 = getStack("gargoyle",50);
 attack(guy1,guy2);
 console.log("Guy 1");
