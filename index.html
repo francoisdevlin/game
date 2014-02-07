@@ -14,6 +14,49 @@ var location={
 	2:{2:guy1,3:guy2},
 }
 
+function getMoves(start,immobiles,width,height){
+	var output = [];
+	for(var iter1=0;iter1<width;iter1++){
+		output[iter1] = [];
+		for(var iter2=0;iter2<height;iter2++){
+			output[iter1][iter2] = undefined;
+		}
+	}
+	output[start[0]][start[1]] = 0;
+	for(var iter1 = 0; iter1< immobiles.length; iter1++){
+		var entry = immobiles[iter1];
+		output[entry[0]][entry[1]] = -1;
+
+	}
+	var distance = 10;
+	var previousEntries = [start];
+	for(var iter1 = 0; iter1<distance; iter1++){
+		var currentEntries = [];
+		previousEntries.forEach(function(entry){
+			var x = entry[0];
+			var y = entry[1];
+			if(x < width-1) currentEntries.push([x+1,y]);
+			if(x > 0) currentEntries.push([x-1,y]);
+			if(y < height-1) currentEntries.push([x,y+1]);
+			if(y > 0) currentEntries.push([x,y-1]);
+		});
+		previousEntries = [];
+		for(var iter2=0 ; iter2 < currentEntries.length ; iter2++){
+			var entry = currentEntries[iter2];
+			var x = entry[0];
+			var y = entry[1];
+			if(output[x][y] === undefined){
+				output[x][y] = iter1+1;
+				previousEntries.push(entry);
+			}
+		}
+	}
+	console.log(output);
+	return output;
+}
+
+getMoves([2,2],[[2,3]],10,10);
+
 var gridTable = $("#grid-table");
 
 drawBattlefield(gridTable,location);
