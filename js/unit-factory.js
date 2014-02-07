@@ -5,6 +5,7 @@ var baseStats = {
 		hit:100,
 		atk:20,
 		def:18,
+		range:8,
 		counters:1
 	},
 	peasant:{
@@ -13,14 +14,16 @@ var baseStats = {
 		hit:5,
 		atk:3,
 		def:2,
+		range:3,
 		counters:1
 	},
 	gargoyle:{
-		name:"Gargoyle",
+		name:"Garg",
 		crit:0.05,
 		hit:10,
 		atk:6,
 		def:6,
+		range:4,
 		counters:1
 	},
 }
