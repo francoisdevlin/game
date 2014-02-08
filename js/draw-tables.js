@@ -3,6 +3,11 @@ function drawGuyTable(table,stack){
 	if(stack==null){
 		stack={};
 	}
+	var tr = $("<tr />");
+	$("<td colspan='2'/>")
+		.append($("<img src='img/"+stack.id+"'.png>").addClass("icon"))
+		.appendTo(tr);
+	tr.appendTo(table);
 	["name","qty","hit","atk","def"].forEach(function(entry){
 		var tr = $("<tr />");
 		$("<td />",{
@@ -36,8 +41,10 @@ function drawBattlefield(table,positions){
 	var self = this;
 	var listener = function(event){
 		var theGuy = null;
-		var x = event.target.x;
-		var y = event.target.y;
+		var x = event.target.game.x;
+		var y = event.target.game.y;
+		console.log(x);
+		console.log(y);
 		if(self.location[x] && self.location[x][y]){
 			theGuy = self.location[x][y];
 		}
@@ -61,24 +68,29 @@ function drawBattlefield(table,positions){
 	for(var iter1=0; iter1<self.width;iter1++){
 		var tr = $("<tr />");
 		for(var iter2=0; iter2<self.height;iter2++){
+			var coords ={x:parseInt(iter1),y:parseInt(iter2)} ;
 			var obj = {};
+			obj.class= "x-" + iter1 + " y-" + iter2;
+			var td = $("<td />",obj);
+			td.click(listener);
+			td.prop({game:coords});
+
 			var localGuy = null;
 			if(positions[iter1] && positions[iter1][iter2]){
 				localGuy = positions[iter1][iter2];
-				obj.text = localGuy.name;
+				td.append($("<img src='img/"+localGuy.id+"'.png>")
+						.addClass("icon")
+						.prop({game:coords})
+						);
 			}else{
 				//obj.text = iter1 + "." + iter2;
 			}
-			obj.class= "x-" + iter1 + " y-" + iter2;
 			
 			for(var iter3=0;iter3<moves.length;iter3++){
 				if(moves[iter3][iter1][iter2] > 0){
-					obj.class+=" tag-"+iter3;
+					td.addClass("tag-"+iter3);
 				}
 			}
-			var td = $("<td />",obj);
-			td.click(listener);
-			td.prop({x:iter1,y:iter2});
 			td.appendTo(tr);
 
 		}

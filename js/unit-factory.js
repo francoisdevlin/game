@@ -38,7 +38,9 @@ var baseStats = {
 }
 
 function factory(name){
-	return baseStats[name];
+	var obj = baseStats[name];
+	obj.id = name;
+	return obj;
 }
 
 function getStack(name,qty){
