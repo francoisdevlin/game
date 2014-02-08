@@ -15,6 +15,21 @@ function drawGuyTable(table,stack){
 	})
 }
 
+function getRandom(min, max) {
+	    return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function getRocks(rockCount){
+	var output = [];
+	var self = this;
+	for(var iter1=0;iter1<rockCount;iter1++){
+		var x = getRandom(0,self.width-1);
+		var y = getRandom(1,self.height-2);
+		output.push([x,y]);
+	}
+	return output;
+}
+
 function drawBattlefield(table,positions){
 	var guyTable = $("#guy-table");
 
@@ -29,7 +44,6 @@ function drawBattlefield(table,positions){
 		drawGuyTable(guyTable,theGuy);
 		$("#grid-table td").removeClass("shaded");
 		if(theGuy){
-			//console.log("Bacon " + theGuy.moveTag);
 			$("."+theGuy.moveTag).addClass("shaded");
 		}
 	};
@@ -40,7 +54,7 @@ function drawBattlefield(table,positions){
 		Object.keys(row).forEach(function(iter2){
 			var guy = row[iter2];
 			guy.moveTag = "tag-" + moves.length;
-			moves.push(self.getMoves([parseInt(iter1),parseInt(iter2)],guy.range,[[2,3],[2,4]]))
+			moves.push(self.getMoves([parseInt(iter1),parseInt(iter2)],guy.range,self.getLocationIndexes()))
 		})
 	})
 
@@ -90,7 +104,6 @@ function getMoves(start,distance,immobiles){
 
 	}
 	output[start[0]][start[1]] = 0;
-	console.log(output);
 	//var distance = 10;
 	var previousEntries = [start];
 	for(var iter1 = 0; iter1<distance; iter1++){
@@ -118,13 +131,29 @@ function getMoves(start,distance,immobiles){
 	return output;
 }
 
+function getLocationIndexes(){
+	var output = [];
+	var self = this;
+	Object.keys(self.location).forEach(function(x){
+		var row = self.location[x];
+		Object.keys(row).forEach(function(y){output.push([x,y])})
+	})
+	return output;
+}
+
 function getLevel(){
-	return {
+	var level = {
 		drawBattlefield:drawBattlefield,
 		drawGuyTable:drawGuyTable,
 		getMoves:getMoves,
+		getRocks:getRocks,
+		getLocationIndexes:getLocationIndexes,
 		width:13,
 		height:20,
 		name:"Bacon"
 	};
+	
+	level.rocks = level.getRocks(40);
+
+	return level;
 }

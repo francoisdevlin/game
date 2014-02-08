@@ -8,6 +8,15 @@ var baseStats = {
 		range:8,
 		counters:1
 	},
+	rock:{
+		name:"Rock",
+		crit:0.05,
+		hit:1000,
+		atk:20,
+		def:50,
+		range:0,
+		counters:0
+	},
 	peasant:{
 		name:"Peasant",
 		crit:0.05,

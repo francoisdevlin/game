@@ -10,11 +10,20 @@ var guy1 = getStack("dragon",1);
 var guy2 = getStack("gargoyle",50);
 //attack(guy1,guy2);
 
+var level = getLevel();
 var location={
 	2:{4:guy1,3:guy2},
 }
+for(var iter1=0;iter1<level.rocks.length;iter1++){
+	var entry = level.rocks[iter1];
+	if(location[entry[0]] === undefined){
+		location[entry[0]] = {};
+	}
+	if(location[entry[0]][entry[1]] === undefined){
+		location[entry[0]][entry[1]] = getStack("rock",1);
+	}
+}
 
-var level = getLevel();
 level.location = location;
 
 var gridTable = $("#grid-table");
