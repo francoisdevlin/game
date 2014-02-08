@@ -35,7 +35,8 @@ function getRocks(rockCount){
 	return output;
 }
 
-function drawBattlefield(table,positions){
+function drawBattlefield(table){
+	table.empty();
 	var guyTable = $("#guy-table");
 
 	var self = this;
@@ -43,15 +44,33 @@ function drawBattlefield(table,positions){
 		var theGuy = null;
 		var x = event.target.game.x;
 		var y = event.target.game.y;
-		console.log(x);
-		console.log(y);
 		if(self.location[x] && self.location[x][y]){
 			theGuy = self.location[x][y];
 		}
 		drawGuyTable(guyTable,theGuy);
+		if(self.mode && self.mode.name=="move"){
+			if(event.target.className.match("shaded")){
+				var origin = self.mode.origin;
+				var guy = self.location[origin.x][origin.y];
+				delete self.location[origin.x][origin.y];
+				if(self.location[x] === undefined){
+					self.location[x] = {};
+				}
+				self.location[x][y] = guy;
+				self.drawBattlefield($("#grid-table"));
+			}else{
+			}
+			self.mode = null;
+		}
+
 		$("#grid-table td").removeClass("shaded");
 		if(theGuy){
 			$("."+theGuy.moveTag).addClass("shaded");
+			self.mode = {
+				name:"move",
+				origin:{x:x,y:y},
+				class:theGuy.moveTag
+			};
 		}
 	};
 
@@ -76,8 +95,8 @@ function drawBattlefield(table,positions){
 			td.prop({game:coords});
 
 			var localGuy = null;
-			if(positions[iter1] && positions[iter1][iter2]){
-				localGuy = positions[iter1][iter2];
+			if(self.location[iter1] && self.location[iter1][iter2]){
+				localGuy = self.location[iter1][iter2];
 				td.append($("<img src='img/"+localGuy.id+"'.png>")
 						.addClass("icon")
 						.prop({game:coords})
