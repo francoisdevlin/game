@@ -27,7 +27,7 @@ var baseStats = {
 		counters:1
 	},
 	gargoyle:{
-		name:"Garg",
+		name:"Gargoyle",
 		crit:0.05,
 		hit:10,
 		atk:6,
