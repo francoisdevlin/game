@@ -40,7 +40,11 @@ var baseStats = {
 function factory(name){
 	var obj = baseStats[name];
 	obj.id = name;
-	return obj;
+	var output = {};
+	Object.keys(obj).forEach(function(key){
+		output[key] = obj[key];
+	})
+	return output;
 }
 
 function getStack(name,qty){
