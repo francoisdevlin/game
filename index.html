@@ -5,14 +5,15 @@
 
 <script>
 $(function(){
-var guy1 = getStack("peasant",100);
-var guy1 = getStack("dragon",1);
-var guy2 = getStack("gargoyle",50);
-//attack(guy1,guy2);
 
 var level = getLevel();
 var location={
-	2:{4:guy1,3:guy2},
+	0:{0:getStack("peasant",100)},
+	1:{19:getStack("dragon",1)},
+	2:{19:getStack("gargoyle",50)},
+	3:{0:getStack("archer",50)},
+	5:{0:getStack("knight",1)},
+	10:{19:getStack("skeleton",100)},
 }
 for(var iter1=0;iter1<level.rocks.length;iter1++){
 	var entry = level.rocks[iter1];

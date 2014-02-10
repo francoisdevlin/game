@@ -8,6 +8,15 @@ var baseStats = {
 		range:8,
 		counters:1
 	},
+	knight:{
+		name:"Knight",
+		crit:0.15,
+		hit:100,
+		atk:20,
+		def:18,
+		range:8,
+		counters:1
+	},
 	rock:{
 		name:"Rock",
 		crit:0.05,
@@ -26,8 +35,26 @@ var baseStats = {
 		range:3,
 		counters:1
 	},
+	skeleton:{
+		name:"Skeleton",
+		crit:0.05,
+		hit:5,
+		atk:3,
+		def:2,
+		range:3,
+		counters:1
+	},
 	gargoyle:{
 		name:"Gargoyle",
+		crit:0.05,
+		hit:10,
+		atk:6,
+		def:6,
+		range:4,
+		counters:1
+	},
+	archer:{
+		name:"Archer",
 		crit:0.05,
 		hit:10,
 		atk:6,
