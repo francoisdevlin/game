@@ -189,8 +189,8 @@ function getLevel(){
 		getMoves:getMoves,
 		getRocks:getRocks,
 		getLocationIndexes:getLocationIndexes,
-		width:13,
-		height:20,
+		width:11,
+		height:16,
 		name:"Bacon"
 	};
 	

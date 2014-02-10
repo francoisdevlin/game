@@ -6,6 +6,7 @@ var baseStats = {
 		atk:20,
 		def:18,
 		range:8,
+		init:12,
 		counters:1
 	},
 	knight:{
@@ -15,6 +16,7 @@ var baseStats = {
 		atk:20,
 		def:18,
 		range:8,
+		init:12,
 		counters:1
 	},
 	rock:{
@@ -33,6 +35,7 @@ var baseStats = {
 		atk:3,
 		def:2,
 		range:3,
+		init:5,
 		counters:1
 	},
 	skeleton:{
@@ -42,6 +45,7 @@ var baseStats = {
 		atk:3,
 		def:2,
 		range:3,
+		init:5,
 		counters:1
 	},
 	gargoyle:{
@@ -51,6 +55,7 @@ var baseStats = {
 		atk:6,
 		def:6,
 		range:4,
+		init:7,
 		counters:1
 	},
 	archer:{
@@ -60,6 +65,7 @@ var baseStats = {
 		atk:6,
 		def:6,
 		range:4,
+		init:7,
 		counters:1
 	},
 }

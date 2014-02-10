@@ -9,12 +9,43 @@ $(function(){
 var level = getLevel();
 var location={
 	0:{0:getStack("peasant",100)},
-	1:{19:getStack("dragon",1)},
-	2:{19:getStack("gargoyle",50)},
+	1:{15:getStack("dragon",1)},
+	2:{15:getStack("gargoyle",50)},
 	3:{0:getStack("archer",50)},
 	5:{0:getStack("knight",1)},
-	10:{19:getStack("skeleton",100)},
+	10:{15:getStack("skeleton",100)},
 }
+
+var units = [];
+Object.keys(location).forEach(function(x){
+	Object.keys(location[x]).forEach(function(y){
+		units.push(location[x][y]);
+	});
+})
+var moves = [];
+var start = 0;
+units.forEach(function(unit){
+	for(var iter1 = 1; iter1 < 10; iter1++){
+		moves.push([iter1*25/unit.init,unit]);
+	}
+});
+
+var turnSorter = function(a,b){
+	var tA = a[0];
+	var tB = b[0];
+	if(tA<tB){
+		return -1;
+	}
+	if(tA>tB){
+		return 1;
+	}
+	return 0;
+}
+
+moves.sort(turnSorter);
+console.log(moves);
+//console.log(units);
+
 for(var iter1=0;iter1<level.rocks.length;iter1++){
 	var entry = level.rocks[iter1];
 	if(location[entry[0]] === undefined){
@@ -30,11 +61,38 @@ level.location = location;
 var gridTable = $("#grid-table");
 
 level.drawBattlefield(gridTable);
+
+var turnTable = $("#turn-table");
+var tr = $("<tr>");
+turnTable.append(tr);
+moves.forEach(function(entry){
+	var unit = entry[1];
+	var td = $("<td>");
+	td.append($("<img src='img/"+unit.id+"'.png>")
+	.addClass("icon"));
+	tr.append(td);
+});
 });
 </script>
 <style>
 #guy-table{
 	float:left;
+}
+
+#turn-table{
+	background:#999999;
+}
+
+#turn-table td{
+	background:#FFFFFF;
+	min-width:48px;
+	max-width:48px;
+	height:48px;
+	text-align:center;
+}
+#turn-table .icon{
+	max-width:48px;
+	max-height:48px;
 }
 
 #guy-table .icon{
@@ -53,15 +111,24 @@ level.drawBattlefield(gridTable);
 
 #grid-table td{
 	background:#FFFFFF;
-	width:48px;
+	min-width:48px;
 	max-width:48px;
 	height:48px;
+	text-align:center;
 }
 #grid-table .shaded {
 	background:#ccc;
+}
+
+#turn-list {
+	overflow:scroll,
+	width:800px;
 }
 </style>
 <div>
 	<table id="guy-table"></table>
 	<table id="grid-table"></table>
+	<div id="turn-list">
+		<table id="turn-table"></table>
+	</div>
 </div>
