@@ -58,7 +58,17 @@ function drawBattlefield(table){
 				}
 				self.location[x][y] = guy;
 				self.drawBattlefield($("#grid-table"));
-			}else{
+			}else if(theGuy){
+				var origin = self.mode.origin;
+				var attacker = self.location[origin.x][origin.y];
+				attack(attacker,theGuy);
+				if(theGuy.qty < 1){
+					delete self.location[x][y];
+				}
+				if(attacker.qty < 1){
+					delete self.location[origin.x][origin.y];
+				}
+				self.drawBattlefield($("#grid-table"));
 			}
 			self.mode = null;
 		}
