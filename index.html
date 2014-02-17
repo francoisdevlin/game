@@ -9,7 +9,7 @@
 $(function(){
 
 var level = getLevel();
-var location={
+var placement={
 	0:{0:getStack("peasant",100)},
 	1:{15:getStack("dragon",1)},
 	2:{15:getStack("gargoyle",50)},
@@ -19,9 +19,9 @@ var location={
 }
 
 var units = [];
-Object.keys(location).forEach(function(x){
-	Object.keys(location[x]).forEach(function(y){
-		units.push(location[x][y]);
+Object.keys(placement).forEach(function(x){
+	Object.keys(placement[x]).forEach(function(y){
+		units.push(placement[x][y]);
 	});
 })
 
@@ -30,22 +30,25 @@ var moves =getTurnOrder(0,units);
 //Place some rocks randomly
 for(var iter1=0;iter1<level.rocks.length;iter1++){
 	var entry = level.rocks[iter1];
-	if(location[entry[0]] === undefined){
-		location[entry[0]] = {};
+	if(placement[entry[0]] === undefined){
+		placement[entry[0]] = {};
 	}
-	if(location[entry[0]][entry[1]] === undefined){
-		location[entry[0]][entry[1]] = getStack("rock",1);
+	if(placement[entry[0]][entry[1]] === undefined){
+		placement[entry[0]][entry[1]] = getStack("rock",1);
 	}
 }
 
-level.location = location;
+level.placement = placement;
 
 var gridTable = $("#grid-table");
 
 level.drawBattlefield(gridTable);
 
+var guyTable = $("#guy-table");
 var turnTable = $("#turn-table");
 drawTurnOrder(turnTable,moves);
+level.setSelectedGuy(moves[0][1]);
+level.drawGuyTable();
 });
 </script>
 <div>

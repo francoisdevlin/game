@@ -1,14 +1,16 @@
-function drawGuyTable(table,stack){
+function drawGuyTable(){
+	var stack = this.currentGuy;
+	var table = $("#guy-table");
 	table.empty();
 	if(stack==null){
 		stack={};
 	}
 	var tr = $("<tr />");
-	$("<td colspan='2'/>")
+	$("<td class='icon' colspan='2'/>")
 		.append($("<img src='img/"+stack.id+"'.png>").addClass("icon"))
 		.appendTo(tr);
 	tr.appendTo(table);
-	["name","qty","hit","atk","def"].forEach(function(entry){
+	["qty","hit","atk","def"].forEach(function(entry){
 		var tr = $("<tr />");
 		$("<td />",{
 			text:entry
@@ -37,56 +39,47 @@ function getRocks(rockCount){
 
 function drawBattlefield(table){
 	table.empty();
-	var guyTable = $("#guy-table");
 
 	var self = this;
 	var listener = function(event){
 		var theGuy = null;
 		var x = event.target.game.x;
 		var y = event.target.game.y;
-		if(self.location[x] && self.location[x][y]){
-			theGuy = self.location[x][y];
+		if(self.placement[x] && self.placement[x][y]){
+			theGuy = self.placement[x][y];
 		}
-		drawGuyTable(guyTable,theGuy);
+		self.drawGuyTable();
 		if(self.mode && self.mode.name=="move"){
 			if(event.target.className.match("shaded")){
 				var origin = self.mode.origin;
-				var guy = self.location[origin.x][origin.y];
-				delete self.location[origin.x][origin.y];
-				if(self.location[x] === undefined){
-					self.location[x] = {};
+				var guy = self.placement[origin.x][origin.y];
+				delete self.placement[origin.x][origin.y];
+				if(self.placement[x] === undefined){
+					self.placement[x] = {};
 				}
-				self.location[x][y] = guy;
+				self.placement[x][y] = guy;
 				self.drawBattlefield($("#grid-table"));
 			}else if(theGuy){
 				var origin = self.mode.origin;
-				var attacker = self.location[origin.x][origin.y];
+				var attacker = self.placement[origin.x][origin.y];
 				attack(attacker,theGuy);
 				if(theGuy.qty < 1){
-					delete self.location[x][y];
+					delete self.placement[x][y];
 				}
 				if(attacker.qty < 1){
-					delete self.location[origin.x][origin.y];
+					delete self.placement[origin.x][origin.y];
 				}
 				self.drawBattlefield($("#grid-table"));
 			}
 			self.mode = null;
 		}
 
-		$("#grid-table td").removeClass("shaded");
-		if(theGuy){
-			$("."+theGuy.moveTag).addClass("shaded");
-			self.mode = {
-				name:"move",
-				origin:{x:x,y:y},
-				class:theGuy.moveTag
-			};
-		}
+		self.setSelectedGuy(theGuy);
 	};
 
 	moves = [];
-	Object.keys(self.location).forEach(function(iter1){
-		var row = self.location[iter1];
+	Object.keys(self.placement).forEach(function(iter1){
+		var row = self.placement[iter1];
 		Object.keys(row).forEach(function(iter2){
 			var guy = row[iter2];
 			guy.moveTag = "tag-" + moves.length;
@@ -105,8 +98,8 @@ function drawBattlefield(table){
 			td.prop({game:coords});
 
 			var localGuy = null;
-			if(self.location[iter1] && self.location[iter1][iter2]){
-				localGuy = self.location[iter1][iter2];
+			if(self.placement[iter1] && self.placement[iter1][iter2]){
+				localGuy = self.placement[iter1][iter2];
 				td.append($("<img src='img/"+localGuy.id+"'.png>")
 						.addClass("icon")
 						.prop({game:coords})
@@ -175,8 +168,8 @@ function getMoves(start,distance,immobiles){
 function getLocationIndexes(){
 	var output = [];
 	var self = this;
-	Object.keys(self.location).forEach(function(x){
-		var row = self.location[x];
+	Object.keys(self.placement).forEach(function(x){
+		var row = self.placement[x];
 		Object.keys(row).forEach(function(y){output.push([x,y])})
 	})
 	return output;
@@ -191,7 +184,31 @@ function getLevel(){
 		getLocationIndexes:getLocationIndexes,
 		width:11,
 		height:16,
-		name:"Bacon"
+		setSelectedGuy : function(theGuy){
+			$("#grid-table td").removeClass("shaded");
+			var self = this;
+			if(theGuy){
+				var origin = {};
+				console.log(self.placement);
+				Object.keys(self.placement).forEach(function(x){
+					var row = self.placement[x];
+					console.log(row);
+					Object.keys(row).forEach(function(y){
+						if(row[y] == theGuy){
+							origin={x:x,y:y};
+						}
+					})
+				})
+				$("."+theGuy.moveTag).addClass("shaded");
+				self.mode = {
+					name:"move",
+					origin:origin,
+					class:theGuy.moveTag
+				};
+			}
+			self.currentGuy=theGuy;
+			self.drawGuyTable();
+		}
 	};
 	
 	level.rocks = level.getRocks(40);
