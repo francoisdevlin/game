@@ -1,0 +1,50 @@
+#guy-table{
+	float:left;
+}
+
+#turn-table{
+	background:#999999;
+}
+
+#turn-table td{
+	background:#FFFFFF;
+	min-width:48px;
+	max-width:48px;
+	height:48px;
+	text-align:center;
+}
+#turn-table .icon{
+	max-width:48px;
+	max-height:48px;
+}
+
+#guy-table .icon{
+	max-width:48px;
+	max-height:48px;
+}
+
+#grid-table{
+	background:#999999;
+}
+
+#grid-table .icon{
+	max-width:48px;
+	max-height:48px;
+}
+
+#grid-table td{
+	background:#FFFFFF;
+	min-width:48px;
+	max-width:48px;
+	height:48px;
+	text-align:center;
+}
+#grid-table .shaded {
+	background: radial-gradient(white 50%, #CCC);
+}
+
+#turn-list {
+	overflow:scroll,
+	width:800px;
+}
+
