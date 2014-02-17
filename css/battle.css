@@ -1,5 +1,11 @@
 #guy-table{
 	float:left;
+	max-width:104px;
+	min-width:104px;
+}
+
+#guy-table .icon{
+	text-align:center;
 }
 
 #turn-table{
